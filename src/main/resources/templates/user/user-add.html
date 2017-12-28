@@ -1,0 +1,62 @@
+<div class="layui-row">
+	<div class="layui-col-xs12">
+		<br>
+		<br>
+		<form id="save-user-form">
+			
+			<table class="table table-hover">
+				<tbody>
+					<tr>
+						<td width="100" lay-verify="required" style="padding: 5px 0;"><label
+							class="layui-form-label">账号<span style="color: red;">
+									*</span></label></td>
+						<td>
+						<input name="id" value="${(user.id)!''}" type="hidden"/>
+						<input name="account" lay-verify="required"
+							value="${(user.account)!''}" autocomplete="off"
+							class="layui-input" type="text"></td>
+						<td width="100"><label class="layui-form-label">密码<span
+								style="color: red;"> *</span></label></td>
+						<td><input name="password" lay-verify="required"
+							autocomplete="off" class="layui-input "<#if
+							user??> disabled </#if> type="password"></td>
+					</tr>
+					<tr>
+						<td width="100" style="padding: 5px 0;"><label
+							class="layui-form-label">姓名<span style="color: red;">
+									*</span></label></td>
+						<td colspan="3"><input name="userName" lay-verify="required"
+							value="${(user.userName)!''}" autocomplete="off"
+							class="layui-input" type="text"></td>
+					</tr>
+					<tr>
+						<td width="100"><label class="layui-form-label">角色 </label></td>
+						<td colspan="3"><select name="roleCodes" 
+							multiple="multiple">
+								<option <#if (user.roleCodes)!?contains("role_admin")>selected</#if>
+								 value="role_admin">管理员角色</option>
+								<option <#if (user.roleCodes)!?contains("role_chief")>selected</#if> 
+								value="role_chief">主编角色</option>
+								<option <#if (user.roleCodes)!?contains("role_editor")>selected</#if> 
+								value="role_editor">小编角色</option>
+								<option <#if (user.roleCodes)!?contains("role_guest")>selected</#if> 
+								value="role_guest">访客角色</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td width="100"><label class="layui-form-label"> </label></td>
+						<td colspan="3">按住"ctrl"键可多选
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</form>
+	</div>
+</div>
+<br>
+<div class="layui-row">
+	<div class="layui-col-md2 layui-col-md-offset5">
+		<button class="layui-btn" onclick="saveUser();">提交</button>
+	</div>
+</div>

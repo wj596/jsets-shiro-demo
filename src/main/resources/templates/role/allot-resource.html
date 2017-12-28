@@ -1,0 +1,38 @@
+<div class="layui-row">
+	<div class="layui-col-xs12">
+		<br>
+		<br>
+		<form id="allot-resource-form">
+			<input id="roleId" name="roleId" value="${(roleId)!''}" type="hidden"/>
+			<table class="table table-hover">
+				<tbody>
+					<tr>
+						<td width="100"><label class="layui-form-label">资源：</label></td>
+						<td colspan="3"><select name="resourceIds" multiple="multiple" 
+						style="width:300px;height:200px;">
+							<#list resources as resource>
+							<option value="${resource.id}"  
+							<#if selecteds!?seq_contains(resource.id)>selected</#if> 
+							>${resource.name} （${(resource.type==1)?string('菜单','按钮')}）    </option>
+							</#list>
+						</select>
+						
+						</td>
+					</tr>
+					<tr>
+						<td width="100"><label class="layui-form-label"> </label></td>
+						<td colspan="3">按住"ctrl"键可多选
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</form>
+	</div>
+</div>
+<br>
+<div class="layui-row">
+	<div class="layui-col-md2 layui-col-md-offset5">
+		<button class="layui-btn" onclick="saveAllotResource();">保存</button>
+	</div>
+</div>

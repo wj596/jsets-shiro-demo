@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<#assign ctx="${requestContext.contextPath}"/>
+<link rel="stylesheet" href="${ctx}/assets/layui/css/layui.css"
+	media="all">
+<script type="text/javascript" src="${ctx}/assets/layui/layui.js"></script>
+<title>paltform</title>
+<style>
+div {
+	text-align: center;
+}
+
+div.layui-container {
+	padding-top: 100px;
+	width: 600px;
+}
+
+form {
+	padding: 20px;
+	padding-top: 0;
+	border: 1px solid #DDD;
+	border-top: none;
+	border-radius: 10px;
+}
+</style>
+</head>
+<body>
+	<div class="layui-container">
+
+		<fieldset class="layui-elem-field layui-field-title site-demo-button"
+			style="margin-top: 30px;">
+			<legend>jsets-security-shiro-demo 登陆页面</legend>
+		</fieldset>
+
+		<form class="layui-form layui-form-pane"
+			action="${ctx}/login" method="post">
+			<div class="layui-form-item">
+				<label class="layui-form-label">帐号</label>
+				<div class="layui-input-block">
+					<input type="text" name="username" value="admin"
+						placeholder="帐号root" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">密码</label>
+				<div class="layui-input-block">
+					<input type="password" name="password"  value="123"
+						placeholder="密码root" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">验证码</label>
+				<div class="layui-input-inline">
+					<input name="jcaptcha"  placeholder="请输入验证码"
+						autocomplete="off" class="layui-input" type="text">
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					<img style="cursor: pointer;" alt="点击切换" src="${ctx}/jcaptcha.jpg"
+						onclick="this.src='${ctx}/jcaptcha.jpg?d='+new Date()*1" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-inline">
+					<label class="layui-form-label">记住我</label> <input
+						name="rememberMe" type="checkbox" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<button class="layui-btn" lay-submit>登录</button>
+			</div>
+		</form>
+		<font color="red">${Request["shiro_auth_message"]!}</font>
+	</div>
+
+</body>
+<script>
+	layui
+			.use(
+					[ 'form', 'layedit', 'laydate' ],
+					function() {
+						var form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
+					});
+</script>
+</html>

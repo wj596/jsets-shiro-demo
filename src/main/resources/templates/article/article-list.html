@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<#include "../commons/imports.html"/>
+</head>
+<body class="layui-layout-body">
+
+	<div class="layui-layout layui-layout-admin">
+		<#include "../commons/header.html"/> <#include
+		"../commons/sider.html"/>
+		<div class="layui-body">
+			<blockquote class="layui-elem-quote">
+				<div class="layui-inline">
+					<div class="layui-input-inline">
+						<input type="text" value="" placeholder="请输入用户姓名"
+							class="layui-input search_input layui-btn-disabled">
+					</div>
+					<a class="layui-btn search_btn">
+					<i class="layui-icon">&#xe615;</i>查询</a>
+				</div>
+				<div class="layui-inline">
+					<div class="layui-btn-group">
+						<button class="layui-btn layui-btn-sm" onclick="articleAdd();">
+							<i class="layui-icon"></i>增加
+						</button>
+						<button class="layui-btn layui-btn-sm" onclick="articleUpdate();">
+							<i class="layui-icon"></i>编辑
+						</button>
+						<button class="layui-btn layui-btn-sm" onclick="articleDelete();">
+							<i class="layui-icon"></i>删除
+						</button>
+					</div>
+				</div>
+				<div class="layui-inline">
+					您可以在角色管理中分配资源，然后点击这些按钮，以测试权限控制。
+				</div>
+			</blockquote>
+			<div style="padding: 5px;">
+				<table class="layui-table">
+					<thead>
+						<tr>
+							<th>标题</th>
+							<th>作者</th>
+							<th>提交时间</th>
+							<th>是否审核</th>
+							<th>审核时间</th>
+							<th>审核人</th>
+							<th>是否发布</th>
+							<th>发布时间</th>
+							<th>审核人</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 内容主体区域 -->
+
+		</div>
+		<#include "../commons/footer.html"/>
+	</div>
+	<script type="text/javascript" src="${ctx}/assets/js/main.js"></script>
+	<script type="text/javascript">
+	function articleAdd(){
+		$.post('${ctx}/article/add', function(result) {
+			if(result.respond==1){ // 这里是处理业务成功的逻辑
+				layer.alert(result.message,{icon:1, title:'成功'});
+			}else{ // 这里是处理业务失败的逻辑
+				layer.alert(result.message,{icon:2, title:'失败'});
+			}
+		}).error(function(xhr, textStatus, errorThrown) {
+			if (xhr.status == 401) {// 这里是处理未登陆的逻辑，实际场景是处理session失效
+				layer.alert(xhr.responseText,{icon:2, title:'错误'});
+			} else if (xhr.status == 403) {// 这里是处理未授权的逻辑
+				layer.alert(xhr.responseText,{icon:2, title:'错误'});
+			} else {
+				alert(xhr.responseText)// 这里是处理其他错误的逻辑
+			}
+		});
+	}
+	
+	
+	function articleDelete(){
+		$.post('${ctx}/article/delete', function(result) {
+			if(result.respond==1){ // 这里是处理业务成功的逻辑
+				layer.alert(result.message,{icon:1, title:'成功'});
+			}else{ // 这里是处理业务失败的逻辑
+				layer.alert(result.message,{icon:2, title:'失败'});
+			}
+		}).error(function(xhr, textStatus, errorThrown) {
+			if (xhr.status == 401) {// 这里是处理未登陆的逻辑，实际场景是处理session失效
+				layer.alert(xhr.responseText,{icon:2, title:'错误'});
+			} else if (xhr.status == 403) {// 这里是处理未授权的逻辑
+				layer.alert(xhr.responseText,{icon:2, title:'错误'});
+			} else {
+				alert(xhr.responseText)// 这里是处理其他错误的逻辑
+			}
+		});
+	}
+	
+	
+	function articleUpdate(){
+		$.post('${ctx}/article/update', function(result) {
+			if(result.respond==1){ // 这里是处理业务成功的逻辑
+				layer.alert(result.message,{icon:1, title:'成功'});
+			}else{ // 这里是处理业务失败的逻辑
+				layer.alert(result.message,{icon:2, title:'失败'});
+			}
+		}).error(function(xhr, textStatus, errorThrown) {
+			if (xhr.status == 401) {// 这里是处理未登陆的逻辑，实际场景是处理session失效
+				layer.alert(xhr.responseText,{icon:2, title:'错误'});
+			} else if (xhr.status == 403) {// 这里是处理未授权的逻辑
+				layer.alert(xhr.responseText,{icon:2, title:'错误'});
+			} else {
+				alert(xhr.responseText)// 这里是处理其他错误的逻辑
+			}
+		});
+	}
+	
+	</script>
+	
+</body>
+</html>
