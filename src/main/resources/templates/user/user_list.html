@@ -57,11 +57,11 @@
 							<td>${user.roleCodes!}</td>
 							<td>
 							<#if user.status==1>
-							<a class="layui-btn layui-btn-mini" onclick="lock('${user.id}')">
+							<a class="layui-btn layui-btn-mini" onclick="lock('${user.account}')">
 								<i class="layui-icon">&#xe631;</i> 锁定</a>
 							</#if>	
 							<#if user.status==2>
-							<a class="layui-btn layui-btn-mini" onclick="unlock('${user.id}')">
+							<a class="layui-btn layui-btn-mini" onclick="unlock('${user.account}')">
 								<i class="layui-icon">&#xe631;</i> 解锁</a>
 							</#if>	
 							<a class="layui-btn layui-btn-mini" onclick="editUser('${user.account}')">
@@ -81,12 +81,12 @@
 	<script type="text/javascript" src="${ctx}/assets/js/main.js"></script>
 	<script>
 		function editUser(_account) {
-			ajaxPost("${ctx}/user/add",{
+			ajaxPost("${ctx}/user/edit",{
 				account:_account
 			},function(result) {
 				layer.open({
 					type:1,
-					title : '添加用户',
+					title : '编辑用户',
 					area : [ '700px', '450px' ],
 					skin : 'layui-layer-lan',
 					btn : '关闭',
@@ -119,18 +119,18 @@
 				window.location.href = '${ctx}/user/list';
 			});
 		}
-		function lock(_id) {
-			ajaxPost("${ctx}/user/switchLock",{
-				 id:_id
+		function lock(_account) {
+			ajaxPost("${ctx}/user/switch_lock",{
+				 account:_account
 				,lockStatus:2
 			},function(result) {
 				window.location.href = '${ctx}/user/list';
 				layer.alert('用户锁定成功',{icon:1, title:'成功'});
 			});
 		}
-		function unlock(_id) {
-			ajaxPost("${ctx}/user/switchLock",{
-				 id:_id
+		function unlock(_account) {
+			ajaxPost("${ctx}/user/switch_lock",{
+				 account:_account
 				,lockStatus:1
 			},function(result) {
 				window.location.href = '${ctx}/user/list';

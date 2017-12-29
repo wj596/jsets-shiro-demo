@@ -1,3 +1,20 @@
+/*
+ * Copyright 2017-2018 the original author(https://github.com/wj596)
+ * 
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * </p>
+ */
 package org.jsets.shiro.demo.service;
 
 import java.util.List;
@@ -12,7 +29,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Strings;
-
+/**
+ * 用户管理Service
+ * 
+ * 需要注意两点：
+ * <br>1：加密存储密码时使用shiroSecurityService.password(password明文)加密，
+ *       保证存储的密码和登陆验证时使用的加密口径（加密算法、hash盐值、hash次数）是一样的。
+ * <br>2：如果启用了auth-cache缓存，修改用户信息(用户状态、持有角色等和认证授权有关的信息)后，
+ *       使用shiroSecurityService.clearAuthCache(account)清除该用户的认证和授权信息缓存。
+ *       
+ * @author wangjie (https://github.com/wj596) 
+ * @date 2016年6月24日 下午2:55:15
+ */ 
 @Service
 public class UserService {
 	
@@ -20,12 +48,14 @@ public class UserService {
 	private JdbcEnhance jdbcEnhance;
 	@Autowired
 	private UserRoleService userRoleService;
+	
 	@Autowired
 	private ShiroSecurityService shiroSecurityService;
 	
 	@Transactional
 	public void save(UserEntity user){
 		if(Strings.isNullOrEmpty(user.getId())){
+			// 密码明文加密存储
 			user.setPassword(shiroSecurityService.password(user.getPassword()));
 			user.setCreateUser(shiroSecurityService.getUser().getAccount());
 			user.setCreateTime(CommonUtil.nowDate());
@@ -42,6 +72,7 @@ public class UserService {
 				userRole.setRoleId(roleName);
 				userRoleService.save(userRole);
 			}
+			// 清除该用户的认证和授权信息缓存
 			shiroSecurityService.clearAuthCache(user.getAccount());
 		}
 	}
@@ -52,6 +83,7 @@ public class UserService {
 						.SET("STATUS = ?")
 						.WHERE("ACCOUNT = ?"), 
 					status,account);
+		// 清除该用户的认证和授权信息缓存
 		shiroSecurityService.clearAuthCache(account);
 	}
 

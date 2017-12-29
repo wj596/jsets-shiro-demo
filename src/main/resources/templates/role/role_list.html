@@ -72,7 +72,7 @@
 	<script type="text/javascript" src="${ctx}/assets/js/main.js"></script>
 		<script>
 		function allotResource(_roleId) {
-			ajaxPost("${ctx}/role/allot-resource",{
+			ajaxPost("${ctx}/role/allot_resource",{
 				roleId:_roleId
 			},function(result) {
 				layer.open({
@@ -94,7 +94,7 @@
 			var _resourceIds = _resourceIdArray.join(',');
 			var _roleId = $("#roleId").val();
 
-			ajaxPost("${ctx}/role/save-resource",{
+			ajaxPost("${ctx}/role/save_role_resource",{
 				roleId:_roleId
 				,resourceIds:_resourceIds
 			},function(result) {

@@ -9,15 +9,9 @@
 		<#include "../commons/header.html"/> <#include
 		"../commons/sider.html"/>
 		<div class="layui-body">
-			<blockquote class="layui-elem-quote">
-				<div class="layui-inline">
-					系统配置：
-					<br>HMAC摘要算法：${hmacAlg!}
-					<br>HMAC摘要秘钥：${hmacSecretKey!}
-				</div>
-			</blockquote>
-			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 3px;"></fieldset>
-			
+			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 3px;">
+				<legend>签名生成</legend>
+			</fieldset>
 			<table class="table table-hover">
 				<tbody>
 					<tr>
@@ -31,8 +25,8 @@
 					<tr>
 						<td width="100" style="padding: 5px 0;"></td>
 						<td width="300">
-							<a class="layui-btn layui-btn-mini" onclick="createHmac()">
-							<i class="layui-icon">&#xe642;</i> 生成摘要</a>
+							<a class="layui-btn layui-btn-mini" onclick="hmacDigest()">
+							<i class="layui-icon">&#xe642;</i> 生成签名</a>
 						</td>
 					</tr>
 				</tbody>
@@ -43,24 +37,39 @@
 					<br>参数2(parameter2)：<span id="parameter2_value"></span>
 					<br>时间戳(hmac_timestamp)：<span id="hmac_timestamp_value"></span>
 					<br>用户标识(hmac_app_id)：<span id="hmac_app_id_value"></span>
-					<br>进行摘要的内容：<span id="base_string_value"></span>
 					<br>
 					<div style="width: 400px;" class="layui-input-inline">
-					 摘要：<input id="hmac_digest_value" name="hmac_digest" class="layui-input " type="text"/>
+					 生成的签名：<input id="hmac_digest_value" name="hmac_digest" class="layui-input " type="text"/>
 					</div>
 				</div>
 			</blockquote>
-			<a class="layui-btn layui-btn-mini" onclick="hmacRequest()">
-							<i class="layui-icon">&#xe642;</i> 请求接口</a>
+			
+			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 3px;">
+				<legend>API调用</legend>
+			</fieldset>
+			
+			<a class="layui-btn layui-btn-mini" onclick="hmacPost('add')">
+							<i class="layui-icon">&#xe642;</i> 请求API:add</a>
 							<br><br>
-							如果想测试认证不通过的情况，可以修改参数或者摘要的值
+			<a class="layui-btn layui-btn-mini" onclick="hmacPost('update')">
+							<i class="layui-icon">&#xe642;</i> 请求API:update</a>
+							<br><br>
+			<a class="layui-btn layui-btn-mini" onclick="hmacGet('delete')">
+							<i class="layui-icon">&#xe642;</i> 请求API:delete</a>
+							<br><br>			
+
+							如果您想测试数字签名无效的情况，可以修改参数或者数字签名的值，不点击"生成签名"直接点击测试方法。
+							<br>
+							delete api只有拥有role_admin角色的账号可以调用，如果您想测试权限不足的情况，请非切换其他账号或修改权限后测试
+							<br>
+							如果您想测签名过期失效的情况，请修改配置项"hmac-period（默认一分钟）",等待超过这个时间后点击测试方法
 			<!-- 内容主体区域 -->
 		</div>
 		<#include "../commons/footer.html"/>
 	</div>
 	<script type="text/javascript" src="${ctx}/assets/js/main.js"></script>
 		<script>
-		function createHmac() {
+		function hmacDigest() {
 			var parameter1 = $("#parameter1").val();
 			var parameter2 = $("#parameter2").val();
 			if(parameter1 == ''){
@@ -72,15 +81,14 @@
 				return;
 			}
 			var hmac_timestamp =  Date.parse(new Date());
-			var hmac_app_id =  '${Session.shiro_current_user_account!}';
+			var hmac_app_id =  '${Session.shiro_current_user.account!}';
 			$("#parameter1_value").html(parameter1);
 			$("#parameter2_value").html(parameter2);
 			$("#hmac_timestamp_value").html(hmac_timestamp);
 			$("#hmac_app_id_value").html(hmac_app_id);
 			var base_string = parameter1+parameter2+hmac_app_id+hmac_timestamp
-			$("#base_string_value").html(base_string);
 			var hmac_digest = "";
-			ajaxPost("${ctx}/rest/hmac_digest",{
+			ajaxPost("${ctx}/stateless/hmac_digest",{
 				base_string:base_string
 			},function(result) {
 				if(result.respond == 1){
@@ -92,19 +100,19 @@
 		}
 		
 		
-		function hmacRequest() {
+		function hmacPost(_apiName) {
 			var hmac_digest = $("#hmac_digest_value").val();
 			if(hmac_digest == ''){
-				layer.alert('请先生成摘要',{icon:2, title:'错误'});
+				layer.alert('请先生成签名',{icon:2, title:'错误'});
 				return;
 			}
 			var parameter1 = $("#parameter1").val();
 			var parameter2 = $("#parameter2").val();
-			var hmac_app_id =  '${Session.shiro_current_user_account!}';
+			var hmac_app_id =  '${Session.shiro_current_user.account!}';
 			var hmac_timestamp = $("#hmac_timestamp_value").html();
-			
-			ajaxPost('${ctx}/rest/test_post',{
-				parameter1:parameter1
+			ajaxPost('${ctx}/stateless/hmac_post',{
+				 apiName:_apiName
+				,parameter1:parameter1
 				,parameter2:parameter2
 				,hmac_app_id:hmac_app_id
 				,hmac_timestamp:hmac_timestamp
@@ -116,7 +124,33 @@
 					layer.alert(result.message,{icon:2, title:'失败'});
 				}
 			})
-		}		
+		}
+		
+		function hmacGet(_apiName) {
+			var hmac_digest = $("#hmac_digest_value").val();
+			if(hmac_digest == ''){
+				layer.alert('请先生成签名',{icon:2, title:'错误'});
+				return;
+			}
+			var parameter1 = $("#parameter1").val();
+			var parameter2 = $("#parameter2").val();
+			var hmac_app_id =  '${Session.shiro_current_user.account!}';
+			var hmac_timestamp = $("#hmac_timestamp_value").html();
+			ajaxPost('${ctx}/stateless/hmac_get',{
+				 apiName:_apiName
+				,parameter1:parameter1
+				,parameter2:parameter2
+				,hmac_app_id:hmac_app_id
+				,hmac_timestamp:hmac_timestamp
+				,hmac_digest:hmac_digest
+			},function(result) {
+				if(result.respond==1){
+					layer.alert(result.message,{icon:1, title:'成功'});
+				}else{
+					layer.alert(result.message,{icon:2, title:'失败'});
+				}
+			})
+		}	
 	</script>
 </body>
 </html>

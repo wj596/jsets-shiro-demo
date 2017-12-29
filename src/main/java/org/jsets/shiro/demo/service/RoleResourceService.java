@@ -1,3 +1,20 @@
+/*
+ * Copyright 2017-2018 the original author(https://github.com/wj596)
+ * 
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * </p>
+ */
 package org.jsets.shiro.demo.service;
 
 import java.util.List;
@@ -12,17 +29,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Maps;
-
 /**
+ * 角色资源管理Service
  * 
- * @author wangjie
- *
- */
+ * 需要注意当 角色对应的资源改变，要刷新动态过滤规则 shiroSecurityService.reloadFilterRules();
+ * 
+ * @author wangjie (https://github.com/wj596)
+ * @date 2016年9月15日
+ */ 
 @Service
 public class RoleResourceService {
 	
 	@Autowired
 	private JdbcEnhance jdbcEnhance;
+	// jsets-shiro组件提供的， 安全功能聚合服务
 	@Autowired
 	private ShiroSecurityService shiroSecurityService;
 	
@@ -39,7 +59,7 @@ public class RoleResourceService {
 
 	public void save(RoleResourceEntity roleResource){
 		jdbcEnhance.insert(roleResource);
-		// 刷新动态URL权限控制
+		// 角色对应的资源改变，要刷新动态过滤规则
 		shiroSecurityService.reloadFilterRules();
 	}
 	
@@ -61,21 +81,4 @@ public class RoleResourceService {
 				.parameter(roleId)
 				.list();
 	}
-
-	public Map<String,String> resourceRoleMapping(){
-		 Map<String,String> accessibles = Maps.newLinkedHashMap();
-		 List<Map<String,Object>> urlRoles = this.jdbcEnhance
-				.getJdbcTemplate()
-				.queryForList(SqlBuilder.BUILD()
-						.SELECT("URL,GROUP_CONCAT(T.ROLE_ID ORDER BY R.URL) ACCESS_ROLES")
-						.FROM("T_ROLE_RESOURCE T")
-						.JOIN("T_RESOURCE R ON T.RESOURCE_ID = R.ID")
-						.GROUP_BY("R.URL")
-						.toString());
-		 for(Map<String,Object> accessible: urlRoles){
-			 accessibles.put((String)accessible.get("URL"), (String)accessible.get("ACCESS_ROLES"));
-		 }
-		 return accessibles;
-	}
-
 }
