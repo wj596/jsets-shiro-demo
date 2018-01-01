@@ -32,5 +32,23 @@
 			eternal="true"
 			statistics="true">
 	</cache>
+	<!-- 认证数据缓存 -->
+	<cache name="shiro-authenticationCache"
+           maxEntriesLocalHeap="2000"
+           overflowToDisk="false"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           statistics="true">
+    </cache>
+    <!-- 授权数据缓存 -->
+	<cache name="shiro-authorizationCache"
+           maxEntriesLocalHeap="2000"
+           overflowToDisk="false"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           statistics="true">
+    </cache>
 
 </ehcache>

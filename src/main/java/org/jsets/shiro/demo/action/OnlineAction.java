@@ -39,16 +39,11 @@ import com.google.common.collect.Lists;
 @Controller
 @RequestMapping("/online")
 public class OnlineAction {
-
-	
 	// jsets-shiro组件提供的， 安全功能聚合服务
 	@Autowired
 	private ShiroSecurityService shiroSecurityService;
 	
-	
 	/**
-	 * 
-	 * 
      * 当前在线用户
      */
     @RequestMapping("/list")
@@ -57,41 +52,15 @@ public class OnlineAction {
     	int onlineCount = this.shiroSecurityService.getActiveSessionCount();
     	// 当前存活的Session列表
     	List<Session> activeSessions = this.shiroSecurityService.getActiveSessions();
-    	// 包装VO
+    	// 包装OnlineUserVo
     	List<OnlineUserVo> onlineUsers = Lists.newArrayList();
-    	for(Session session:activeSessions){
-    		OnlineUserVo onlineUser = new OnlineUserVo();
-    		onlineUser.setSessionId((String)session.getId());
-    		onlineUser.setStartTime(session.getStartTimestamp());
-    		onlineUser.setLastAccess(session.getLastAccessTime());
-    		onlineUser.setHost(session.getHost());
-    		onlineUser.setTimeout(session.getTimeout());
-    		// 从SESSION中获取里面的用户属性
-    		// shiro_current_user属性是在用户登陆成功后放入session中的属性
-    		UserEntity activeUser = (UserEntity) session.getAttribute(ShiroProperties.ATTRIBUTE_SESSION_CURRENT_USER);
-    		if(null!=activeUser){
-    			// 存在的用户姓名
-    			onlineUser.setUserName(activeUser.getUserName());
-    		}else{
-    			// 没有shiro_current_user属性的session,是无效的session Shiro会定期清扫缓存
-    			onlineUser.setUserName("无效的，等待被清理");
-    		}
-    		// Session中包含shiro_force_logout_attribute属性
-    		// 说明此session已经被强制下线，Shiro定期清扫缓存时会删除此session
-    		if(null!=session.getAttribute(ShiroProperties.ATTRIBUTE_SESSION_FORCE_LOGOUT)){
-    			onlineUser.setForceLogout(true);
-    		}
-    		onlineUsers.add(onlineUser);
-    	}
+    	// 包装代码见DEMO
     	model.addAttribute("onlineCount",onlineCount);
     	model.addAttribute("onlineUsers",onlineUsers);
         return "online/online_list";
     }
     
     /**
-     * 
-     * 
-     * 
      * 强制SESSION下线
      */
     @RequestMapping("/do_force_fogout")
@@ -99,5 +68,4 @@ public class OnlineAction {
     	this.shiroSecurityService.forceLogout(sessionId);
         return "redirect:/online/list";
     }
-
 }

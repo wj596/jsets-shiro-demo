@@ -52,6 +52,9 @@ public class UserService {
 	@Autowired
 	private ShiroSecurityService shiroSecurityService;
 	
+	/**
+	 * 保存用户信息
+	 */
 	@Transactional
 	public void save(UserEntity user){
 		if(Strings.isNullOrEmpty(user.getId())){
