@@ -46,7 +46,7 @@
 							<i class="layui-icon">&#xe642;</i> 请求API:delete</a>
 							<br><br>			
 
-							如果您想测试令牌无效情况，可以修改令牌的值，不点击"签发令牌"直接点击测试方法。
+							如果您想测试未进行身份认证情况，不点击"签发令牌"直接点击测试方法。
 							<br>
 							delete api只有拥有role_admin角色的账号可以调用，如果您想测试权限不足的情况，请非切换其他账号或修改权限后测试
 							<br>如果您想测试令牌过期失效的情况，点击"签发令牌"等待10秒后，点击测试方法。
@@ -82,10 +82,6 @@
 		}
 		function jwtGet(_apiName) {
 			var jwt = $("#jwt_value").val();
-			if(jwt == ''){
-				layer.alert('请先签发令牌',{icon:2, title:'错误'});
-				return;
-			}
 			ajaxPost('${ctx}/stateless/jwt_get',{
 				 apiName:_apiName
 				,jwt:jwt

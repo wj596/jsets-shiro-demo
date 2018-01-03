@@ -54,7 +54,24 @@ public class OnlineAction {
     	List<Session> activeSessions = this.shiroSecurityService.getActiveSessions();
     	// 包装OnlineUserVo
     	List<OnlineUserVo> onlineUsers = Lists.newArrayList();
-    	// 包装代码见DEMO
+    	for(Session session:activeSessions){
+    		OnlineUserVo onlineUser = new OnlineUserVo();
+    		onlineUser.setSessionId((String)session.getId());
+    		onlineUser.setStartTime(session.getStartTimestamp());
+    		onlineUser.setLastAccess(session.getLastAccessTime());
+    		onlineUser.setHost(session.getHost());
+    		onlineUser.setTimeout(session.getTimeout());
+    		// 从SESSION中获取里面的用户属性
+    		UserEntity user = (UserEntity) session.getAttribute(ShiroProperties.ATTRIBUTE_SESSION_CURRENT_USER);
+    		if(null!=user){
+    			onlineUser.setUserName(user.getUserName());
+    		}else{
+    			onlineUser.setUserName("无效的，等待被清理");
+    		}
+    		if(null!=session.getAttribute(ShiroProperties.ATTRIBUTE_SESSION_FORCE_LOGOUT))
+    			onlineUser.setForceLogout(true);
+    		onlineUsers.add(onlineUser);
+    	}
     	model.addAttribute("onlineCount",onlineCount);
     	model.addAttribute("onlineUsers",onlineUsers);
         return "online/online_list";

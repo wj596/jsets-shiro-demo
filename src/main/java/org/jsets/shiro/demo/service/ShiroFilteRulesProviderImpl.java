@@ -3,8 +3,6 @@ package org.jsets.shiro.demo.service;
 import java.util.List;
 import org.jsets.jdbc.JdbcEnhance;
 import org.jsets.shiro.model.CustomRule;
-import org.jsets.shiro.model.HmacRule;
-import org.jsets.shiro.model.JwtRule;
 import org.jsets.shiro.model.RolePermRule;
 import org.jsets.shiro.service.ShiroFilteRulesProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,34 +51,34 @@ public class ShiroFilteRulesProviderImpl implements ShiroFilteRulesProvider{
 	}
 
 	@Override
-	public List<HmacRule> loadHmacRules() {
+	public List<RolePermRule> loadHmacRules() {
 		/// HMAC数字签名鉴权过滤规则配置
 		/// 为了展示数据原貌使用了编码配置
 		/// 真实场景中可以通过界面配置，比如做一个"接口管理"功能
 		/// 或者放到"资源管理"中和菜单、按钮一块管理
 		
 		// 删除操作需要通过HMAC数字摘要认证并且具有"role_admin"角色
-		HmacRule hmacRule1 = new HmacRule("/hmac_api/delete","role_admin");
+		RolePermRule hmacRule1 = new RolePermRule("/hmac_api/delete","role_admin");
 		// 其余操作需要通过HMAC数字摘要认证
-		HmacRule hmacRule2 = new HmacRule("/hmac_api/**");
-		List<HmacRule> hmacRules = Lists.newLinkedList();
+		RolePermRule hmacRule2 = new RolePermRule("/hmac_api/**");
+		List<RolePermRule> hmacRules = Lists.newLinkedList();
 		hmacRules.add(hmacRule1);
 		hmacRules.add(hmacRule2);
 		return hmacRules;
 	}
 
 	@Override
-	public List<JwtRule> loadJwtRules() {
+	public List<RolePermRule> loadJwtRules() {
 		/// JWT令牌鉴权过滤规则配置
 		/// 为了展示数据原貌使用了编码配置
 		/// 真实场景中可以通过界面配置，比如做一个"接口管理"功能
 		/// 或者放到"资源管理"中和菜单、按钮一块管理
 		
 		// 删除操作需要通过JWT令牌认证并且具有"role_admin"角色
-		JwtRule jwtRule1 = new JwtRule("/jwt_api/delete","role_admin");
+		RolePermRule jwtRule1 = new RolePermRule("/jwt_api/delete","role_admin");
 		// 其余操作需要通过JWT令牌认证
-		JwtRule jwtRule2 = new JwtRule("/jwt_api/**");
-		List<JwtRule> jwtRules = Lists.newLinkedList();
+		RolePermRule jwtRule2 = new RolePermRule("/jwt_api/**");
+		List<RolePermRule> jwtRules = Lists.newLinkedList();
 		jwtRules.add(jwtRule1);
 		jwtRules.add(jwtRule2);
 		return jwtRules;
