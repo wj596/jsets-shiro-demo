@@ -18,7 +18,7 @@
   ```	
  2、项目中使用了jsets-jdbc-spring-boot-starter.jar,jar包在这里[jsets-jdbc-spring-boot-starter-1.0.0.jar](https://github.com/wj596/packages/blob/master/jsets-jdbc-spring-boot-starter-1.0.0.jar?_blank)，您可以下载后传到本地仓库。
  
- 3、运行Application.java，浏览器中打开"http://localhost:8080/shiro-demo"进入系统。
+ 3、运行Application.java，浏览器中打开http://localhost:8080/shiro-demo进入系统。
  
  4、使用用户名"admin"，密码"123"登陆，在"用户管理"界面中可以看到4个测试账号密码都是123，您可以用这些账号进行测试。
 
