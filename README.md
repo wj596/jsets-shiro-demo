@@ -1,6 +1,6 @@
 # jsets-shiro-spring-boot-starter 应用示例
 
-您可以直接下载编译好的包jsets-shiro-demo.zip，解压之后参照里面的"说明.txt"运行示例。
+您可以直接下载编译好的包[jsets-shiro-demo.zip](https://github.com/wj596/packages/blob/master/jsets-shiro-demo.zip?_blank)，解压之后参照里面的"说明.txt"运行示例。
 
 您也可以下载使用源码运行示例。
 
