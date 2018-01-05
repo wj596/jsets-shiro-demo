@@ -101,7 +101,7 @@ public class StatelessTestAction {
 			,@RequestParam(name="hmac_digest") String hmac_digest
 			,HttpServletRequest request) {
     	
-		MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+		MultiValueMap<String, Object> form = new LinkedMultiValueMap<String, Object>();
 		form.add("parameter1", parameter1); 
 		form.add("parameter2", parameter2); 
 	    form.add("hmac_app_id", hmac_app_id); 
@@ -154,7 +154,7 @@ public class StatelessTestAction {
     						,@RequestParam(name="jwt") String jwt
     						,HttpServletRequest request) {
     	
-		MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+		MultiValueMap<String, Object> form = new LinkedMultiValueMap<String, Object>();
 		form.add("jwt", jwt); 
 	    try{
 	    	String restPostUrl = request.getRequestURL().toString().replace("stateless/jwt_post", "");
