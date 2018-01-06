@@ -5,7 +5,7 @@
 您也可以下载使用源码运行示例。
 
 源码编译运行说明：
-1、在mysql中新建一个数据库shiro-demo编码UTF-8，执行src/main/resources/shiro-demo.sql进行建表、导入初始数据。
+1、在mysql中新建一个数据库shiro-demo编码UTF-8，执行src/main/resources/jsets-shiro-demo.sql进行建表、导入初始数据。
 
 2、maven中央仓库有可能下载不了jcaptcha-1.0-all.jar，推荐您使用阿里的maven仓库，比maven中央仓库快多了。
 ```	
