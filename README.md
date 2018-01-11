@@ -1,11 +1,11 @@
 # jsets-shiro-spring-boot-starter 应用示例
 
-您可以直接下载编译好的包jsets-shiro-demo.zip，解压之后参照里面的"说明.txt"运行示例。
+您可以直接下载编译好的包[jsets-shiro-demo.zip](https://github.com/wj596/packages/blob/master/jsets-shiro-demo.zip?_blank)，解压之后参照里面的"说明.txt"运行示例。
 
 您也可以下载使用源码运行示例。
 
 源码编译运行说明：
-1、在mysql中新建一个数据库shiro-demo编码UTF-8，执行src/main/resources/shiro-demo.sql进行建表、导入初始数据。
+1、在mysql中新建一个数据库shiro-demo编码UTF-8，执行src/main/resources/jsets-shiro-demo.sql进行建表、导入初始数据。
 
 2、maven中央仓库有可能下载不了jcaptcha-1.0-all.jar，推荐您使用阿里的maven仓库，比maven中央仓库快多了。
 ```	
