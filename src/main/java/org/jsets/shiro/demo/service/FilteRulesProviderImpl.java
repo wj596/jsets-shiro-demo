@@ -15,7 +15,7 @@ import com.google.common.collect.Lists;
  * @date 2016年8月05日 
  */
 @Service
-public class ShiroFilteRulesProviderImpl implements ShiroFilteRulesProvider{
+public class FilteRulesProviderImpl implements ShiroFilteRulesProvider{
 	
 	@Autowired
 	private JdbcEnhance jdbcEnhance;
@@ -56,11 +56,13 @@ public class ShiroFilteRulesProviderImpl implements ShiroFilteRulesProvider{
 		/// 为了展示数据原貌使用了编码配置
 		/// 真实场景中可以通过界面配置，比如做一个"接口管理"功能
 		/// 或者放到"资源管理"中和菜单、按钮一块管理
-		
-		// 删除操作需要通过HMAC数字摘要认证并且具有"role_admin"角色
-		RolePermRule hmacRule1 = new RolePermRule("/hmac_api/delete","role_admin");
-		// 其余操作需要通过HMAC数字摘要认证
-		RolePermRule hmacRule2 = new RolePermRule("/hmac_api/**");
+		/// 删除操作需要通过HMAC数字摘要认证并且具有"role_admin"角色
+		RolePermRule hmacRule1 = new RolePermRule();
+		hmacRule1.setUrl("/hmac_api/delete");
+		hmacRule1.setNeedRoles("role_admin");
+		/// 其余操作需要通过HMAC数字摘要认证
+		RolePermRule hmacRule2 = new RolePermRule();
+		hmacRule2.setUrl("/hmac_api/**");
 		List<RolePermRule> hmacRules = Lists.newLinkedList();
 		hmacRules.add(hmacRule1);
 		hmacRules.add(hmacRule2);
@@ -74,10 +76,13 @@ public class ShiroFilteRulesProviderImpl implements ShiroFilteRulesProvider{
 		/// 真实场景中可以通过界面配置，比如做一个"接口管理"功能
 		/// 或者放到"资源管理"中和菜单、按钮一块管理
 		
-		// 删除操作需要通过JWT令牌认证并且具有"role_admin"角色
-		RolePermRule jwtRule1 = new RolePermRule("/jwt_api/delete","role_admin");
-		// 其余操作需要通过JWT令牌认证
-		RolePermRule jwtRule2 = new RolePermRule("/jwt_api/**");
+		/// 删除操作需要通过JWT令牌认证并且具有"role_admin"角色
+		RolePermRule jwtRule1 = new RolePermRule();
+		jwtRule1.setUrl("/jwt_api/delete");
+		jwtRule1.setNeedRoles("role_admin");
+		/// 其余操作需要通过JWT令牌认证
+		RolePermRule jwtRule2 = new RolePermRule();
+		jwtRule2.setUrl("/jwt_api/**");
 		List<RolePermRule> jwtRules = Lists.newLinkedList();
 		jwtRules.add(jwtRule1);
 		jwtRules.add(jwtRule2);

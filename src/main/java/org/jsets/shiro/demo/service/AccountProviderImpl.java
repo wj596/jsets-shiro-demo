@@ -33,7 +33,7 @@ import com.google.common.collect.Sets;
  * @date 2016年6月24日 下午2:55:15
  */ 
 @Service
-public class ShiroAccountProviderImpl implements ShiroAccountProvider {
+public class AccountProviderImpl implements ShiroAccountProvider {
 
 	@Autowired
 	private UserService userService;

@@ -18,10 +18,9 @@
 package org.jsets.shiro.demo.action;
 
 import javax.servlet.http.HttpServletRequest;
-import org.jsets.shiro.service.ShiroSecurityService;
+import org.jsets.shiro.util.ShiroUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexAction {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(IndexAction.class);
-
-	// jsets-shiro组件提供的， 安全功能聚合服务
-	@Autowired
-	private ShiroSecurityService shiroSecurityService;
-
     /**
      * 
      * 默认页面
@@ -89,7 +83,7 @@ public class IndexAction {
      */
     @RequestMapping("/kickout")
     public String kickout(HttpServletRequest request) {
-    	this.shiroSecurityService.setAuthMessage(request, "此账号已经在别处登陆,您可以更换账号或者联系统管理员"); 
+    	ShiroUtils.setAuthMessage(request, "此账号已经在别处登陆,您可以更换账号或者联系统管理员"); 
         return "login";
     }
     
@@ -102,7 +96,7 @@ public class IndexAction {
      */
     @RequestMapping("/force_logout")
     public String forceLogout(HttpServletRequest request) {
-    	this.shiroSecurityService.setAuthMessage(request, "您已被管理员强制退出,请联系统管理员");
+    	ShiroUtils.setAuthMessage(request, "您已被管理员强制退出,请联系统管理员");
         return "login";
     }
     
@@ -116,10 +110,10 @@ public class IndexAction {
     @RequestMapping("/abuot_me")
     public String abuotMe(Model model) {
     	///演示：强制转换为具体类型
-    	///UserEntity user = (UserEntity) this.shiroSecurityService.getUser();
+    	///UserEntity user = (UserEntity) ShiroUtils.getUser();
     	///LOGGER.debug(JSON.toJSONString(user));
     	// 当前登陆用户
-    	model.addAttribute("user", this.shiroSecurityService.getUser());
+    	model.addAttribute("user", ShiroUtils.getUser());
         return "abuot_me";
     }
 

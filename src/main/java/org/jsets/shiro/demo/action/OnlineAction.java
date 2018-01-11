@@ -22,8 +22,7 @@ import org.apache.shiro.session.Session;
 import org.jsets.shiro.config.ShiroProperties;
 import org.jsets.shiro.demo.domain.entity.UserEntity;
 import org.jsets.shiro.demo.domain.vo.OnlineUserVo;
-import org.jsets.shiro.service.ShiroSecurityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jsets.shiro.util.ShiroUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,19 +38,15 @@ import com.google.common.collect.Lists;
 @Controller
 @RequestMapping("/online")
 public class OnlineAction {
-	// jsets-shiro组件提供的， 安全功能聚合服务
-	@Autowired
-	private ShiroSecurityService shiroSecurityService;
-	
 	/**
      * 当前在线用户
      */
     @RequestMapping("/list")
     public String list(Model model) {
     	// 当前存活的Session数量
-    	int onlineCount = this.shiroSecurityService.getActiveSessionCount();
+    	int onlineCount = ShiroUtils.getActiveSessionCount();
     	// 当前存活的Session列表
-    	List<Session> activeSessions = this.shiroSecurityService.getActiveSessions();
+    	List<Session> activeSessions = ShiroUtils.getActiveSessions();
     	// 包装OnlineUserVo
     	List<OnlineUserVo> onlineUsers = Lists.newArrayList();
     	for(Session session:activeSessions){
@@ -82,7 +77,7 @@ public class OnlineAction {
      */
     @RequestMapping("/do_force_fogout")
     public String doForceLogout(@RequestParam(name="sessionId") String sessionId) {
-    	this.shiroSecurityService.forceLogout(sessionId);
+    	ShiroUtils.forceLogout(sessionId);
         return "redirect:/online/list";
     }
 }

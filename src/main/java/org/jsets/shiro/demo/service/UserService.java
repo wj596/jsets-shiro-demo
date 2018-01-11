@@ -25,6 +25,7 @@ import org.jsets.shiro.demo.domain.entity.UserEntity;
 import org.jsets.shiro.demo.domain.entity.UserRoleEntity;
 import org.jsets.shiro.demo.util.CommonUtil;
 import org.jsets.shiro.service.ShiroSecurityService;
+import org.jsets.shiro.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +49,7 @@ public class UserService {
 	private JdbcEnhance jdbcEnhance;
 	@Autowired
 	private UserRoleService userRoleService;
-	
-	@Autowired
-	private ShiroSecurityService shiroSecurityService;
-	
+
 	/**
 	 * 保存用户信息
 	 */
@@ -59,8 +57,8 @@ public class UserService {
 	public void save(UserEntity user){
 		if(Strings.isNullOrEmpty(user.getId())){
 			// 密码明文加密存储
-			user.setPassword(shiroSecurityService.password(user.getPassword()));
-			user.setCreateUser(shiroSecurityService.getUser().getAccount());
+			user.setPassword(ShiroUtils.password(user.getPassword()));
+			user.setCreateUser(ShiroUtils.getUser().getAccount());
 			user.setCreateTime(CommonUtil.nowDate());
 			user.setStatus(UserEntity.USER_STATUS_OK);
 			jdbcEnhance.insert(user);
@@ -76,7 +74,7 @@ public class UserService {
 				userRoleService.save(userRole);
 			}
 			// 清除该用户的认证和授权信息缓存
-			shiroSecurityService.clearAuthCache(user.getAccount());
+			ShiroUtils.clearAuthCache(user.getAccount());
 		}
 	}
 	
@@ -87,7 +85,7 @@ public class UserService {
 						.WHERE("ACCOUNT = ?"), 
 					status,account);
 		// 清除该用户的认证和授权信息缓存
-		shiroSecurityService.clearAuthCache(account);
+		ShiroUtils.clearAuthCache(account);
 	}
 
 	public UserEntity getByAccount(String account){

@@ -18,17 +18,16 @@
 package org.jsets.shiro.demo.service;
 
 import java.util.List;
-import java.util.Map;
 import org.jsets.jdbc.JdbcEnhance;
 import org.jsets.jdbc.util.SqlBuilder;
 import org.jsets.shiro.demo.domain.entity.ResourceEntity;
 import org.jsets.shiro.demo.domain.entity.RoleResourceEntity;
 import org.jsets.shiro.demo.util.CommonUtil;
-import org.jsets.shiro.service.ShiroSecurityService;
+import org.jsets.shiro.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.google.common.collect.Maps;
+
 /**
  * 角色资源管理Service
  * 
@@ -42,9 +41,6 @@ public class RoleResourceService {
 	
 	@Autowired
 	private JdbcEnhance jdbcEnhance;
-	// jsets-shiro组件提供的， 安全功能聚合服务
-	@Autowired
-	private ShiroSecurityService shiroSecurityService;
 	
 	@Transactional
 	public void save(String roleId, String resourceIds){
@@ -60,7 +56,7 @@ public class RoleResourceService {
 	public void save(RoleResourceEntity roleResource){
 		jdbcEnhance.insert(roleResource);
 		// 角色对应的资源改变，要刷新动态过滤规则
-		shiroSecurityService.reloadFilterRules();
+		ShiroUtils.reloadFilterRules();
 	}
 	
 	public void deleteResourceByRole(String roleId){
@@ -69,7 +65,6 @@ public class RoleResourceService {
 						.WHERE("ROLE_ID = ?")
 					, roleId);
 	}
-	
 	public List<ResourceEntity> listResourceByRole(String roleId){
 		return jdbcEnhance
 				.selector()

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/jwt_api")
 public class JwtApiAction {
 	
-	@Autowired
+	@Autowired(required = false)
 	private ShiroSecurityService shiroSecurityService;
 	
 	@RequestMapping(value="/add",method=RequestMethod.POST)

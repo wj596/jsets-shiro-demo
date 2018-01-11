@@ -32,22 +32,28 @@
 			eternal="true"
 			statistics="true">
 	</cache>
-	<!-- 认证数据缓存 -->
+	<!-- 认证数据缓存 ，最后一次访问后一小时失效 -->
 	<cache name="shiro-authenticationCache"
            maxEntriesLocalHeap="2000"
            overflowToDisk="false"
            eternal="false"
            timeToIdleSeconds="3600"
-           timeToLiveSeconds="0"
            statistics="true">
     </cache>
-    <!-- 授权数据缓存 -->
+    <!-- 授权数据缓存  ，最后一次访问后一小时失效-->
 	<cache name="shiro-authorizationCache"
            maxEntriesLocalHeap="2000"
            overflowToDisk="false"
            eternal="false"
            timeToIdleSeconds="3600"
-           timeToLiveSeconds="0"
+           statistics="true">
+    </cache>
+    <!-- 已使用过的令牌缓存 ，仅存活一小时-->
+	<cache name="shiro-tokenBurnersCache"
+           maxEntriesLocalHeap="2000"
+           overflowToDisk="true"
+           eternal="false"
+           timeToLiveSeconds="3600"
            statistics="true">
     </cache>
 

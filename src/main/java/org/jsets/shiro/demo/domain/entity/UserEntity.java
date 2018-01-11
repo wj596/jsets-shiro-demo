@@ -33,13 +33,14 @@ import org.jsets.shiro.model.Account;
 @Table(name="t_user")
 public class UserEntity extends BaseEntity implements Account{
 
+	private static final long serialVersionUID = -7970046217356997350L;
 	
 	// 状态-删除
 	public final static Short USER_STATUS_OK = 1;
 	// 状态-锁定
 	public final static Short USER_STATUS_LOCKED = 2;
 	// 状态-删除
-	private final static Short USER_STATUS_DELETED = 9;
+	public final static Short USER_STATUS_DELETED = 9;
 	
 	private String account; // 账号
 	private String password; // 密码

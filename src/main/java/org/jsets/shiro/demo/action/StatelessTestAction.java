@@ -10,6 +10,7 @@ import org.jsets.shiro.demo.service.UserRoleService;
 import org.jsets.shiro.demo.util.CommonUtil;
 import org.jsets.shiro.service.ShiroSecurityService;
 import org.jsets.shiro.util.CryptoUtil;
+import org.jsets.shiro.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,13 +36,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Controller
 @RequestMapping("/stateless")
 public class StatelessTestAction {
-	
-	// jsets-shiro的配置属性
-	@Autowired
-	private ShiroProperties shiroProperties;
-	// jsets-shiro组件提供的， 安全功能聚合服务
-	@Autowired
-	private ShiroSecurityService shiroSecurityService;
+
 	@Autowired
 	private UserRoleService userRoleService;
 	
@@ -50,8 +45,8 @@ public class StatelessTestAction {
      */
     @RequestMapping("/hmac_test")
     public String hmacTest(Model model) {
-    	model.addAttribute("hmacAlg",shiroProperties.getHmacAlg());
-    	model.addAttribute("hmacSecretKey",shiroProperties.getHmacSecretKey());
+    	model.addAttribute("hmacAlg",ShiroUtils.getShiroProperties().getHmacAlg());
+    	model.addAttribute("hmacSecretKey",ShiroUtils.getShiroProperties().getHmacSecretKey());
     	return "stateless/hmac_test";
     }
     
@@ -60,8 +55,8 @@ public class StatelessTestAction {
      */
     @RequestMapping("/jwt_test")
     public String jwtTest(Model model) {
-    	model.addAttribute("hmacAlg",shiroProperties.getHmacAlg());
-    	model.addAttribute("hmacSecretKey",shiroProperties.getHmacSecretKey());
+    	model.addAttribute("hmacAlg",ShiroUtils.getShiroProperties().getHmacAlg());
+    	model.addAttribute("hmacSecretKey",ShiroUtils.getShiroProperties().getHmacSecretKey());
     	return "stateless/jwt_test";
     }
     
@@ -70,20 +65,21 @@ public class StatelessTestAction {
     public @ResponseBody BaseResponse hmacDigest(@RequestParam(name="base_string") String base_string) {
     	
     	String hmac_digest = 
-    			CryptoUtil.hmacDigest(base_string,shiroProperties.getHmacSecretKey(),shiroProperties.getHmacAlg());
+    			CryptoUtil.hmacDigest(base_string
+    					,ShiroUtils.getShiroProperties().getHmacSecretKey()
+    					,ShiroUtils.getShiroProperties().getHmacAlg());
         return BaseResponse.ok().add("hmac_digest", hmac_digest).message("签名成功");
     }
     
     @RequestMapping("/issue_jwt")
     public @ResponseBody BaseResponse issueJwt() {
     	
-    	String usersAccount = shiroSecurityService.getUser().getAccount();
+    	String usersAccount = ShiroUtils.getUser().getAccount();
     	List<String> userRoles = userRoleService.listUserRoles(usersAccount);
     	
-    	String jwt =  CryptoUtil.issueJwt(shiroProperties.getJwtSecretKey()
-    					  ,UUID.randomUUID().toString()
-						  ,shiroSecurityService.getUser().getAccount()
-						  ,shiroSecurityService.getUser().getAccount()
+    	String jwt =  CryptoUtil.issueJwt(ShiroUtils.getShiroProperties().getJwtSecretKey()
+						  ,ShiroUtils.getUser().getAccount()
+						  ,ShiroUtils.getUser().getAccount()
 						  ,10000l
 						  ,CommonUtil.join(userRoles)
 						  ,null
@@ -182,7 +178,5 @@ public class StatelessTestAction {
 	        return BaseResponse.fail().message(e.getResponseBodyAsString());
 	    }
     }
-	
-   
 	
 }
