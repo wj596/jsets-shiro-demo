@@ -16,7 +16,7 @@
   <mirrorOf>*</mirrorOf>      
 </mirror> 
   ```	
- 2、项目中使用了jsets-jdbc-spring-boot-starter.jar,jar包在这里[jsets-jdbc-spring-boot-starter-1.0.0.jar](https://github.com/wj596/packages/blob/master/jsets-jdbc-spring-boot-starter-1.0.0.jar?_blank)，您可以下载后传到本地仓库。
+ 2、项目中使用的[jsets-jdbc-spring-boot-starter-1.0.0.jar](https://github.com/wj596/packages/blob/master/jsets-jdbc-spring-boot-starter-1.0.0.jar?_blank)、[jsets-shiro-spring-boot-starter-1.0.0.jar](https://github.com/wj596/packages/blob/master/jsets-shiro-spring-boot-starter-1.0.0.jar?_blank)您可以下载后传到本地仓库。
  
  3、运行Application.java，浏览器中打开http://localhost:8080/shiro-demo 进入系统。
  
