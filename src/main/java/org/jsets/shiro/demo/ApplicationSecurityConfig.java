@@ -37,11 +37,13 @@ import org.jsets.shiro.demo.service.PasswdRetryLimitHandlerImpl;
 @Configuration
 public class ApplicationSecurityConfig extends JsetsShiroConfigurationAdapter{
 
-	
+	// 账号信息提供者
 	@Autowired
 	private AccountProviderImpl accountProviderImpl;
+	// 密码输入错误次数超限处理器
 	@Autowired
 	private PasswdRetryLimitHandlerImpl passwdRetryLimitHandlerImpl;
+	// 动态URL过滤规则
 	@Autowired
 	private FilteRulesProviderImpl filteRulesProviderImpl;
 	
