@@ -4,9 +4,9 @@
 
 示例运行说明：
 
-1、在mysql中新建一个数据库shiro-demo编码UTF-8，执行src/main/resources/jsets-shiro-demo.sql进行建表、导入初始数据。
+ 1、clone下来jsets-shiro-spring-boot-starter项目
 
-2、maven中央仓库有可能下载不了jcaptcha-1.0-all.jar，推荐您使用阿里的maven仓库。
+ 2、maven中央仓库有可能下载不了jcaptcha-1.0-all.jar，推荐您使用阿里的maven仓库。
 ```	
 <mirror>      
   <id>nexus-aliyun</id>    
@@ -16,7 +16,7 @@
 </mirror> 
   ```	
 
- 3、clone下来jsets-shiro-spring-boot-starter项目
+ 3、在mysql中新建一个数据库shiro-demo编码UTF-8，执行src/main/resources/jsets-shiro-demo.sql进行建表、导入初始数据。
 
  4、运行Application.java，浏览器中打开http://localhost:8080/shiro-demo 进入系统。
  
