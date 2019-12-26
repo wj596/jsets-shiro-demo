@@ -17,18 +17,17 @@
  */
 package org.jsets.shiro.demo.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import org.jsets.shiro.demo.domain.BaseEntity;
+import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 /**
  * 资源实体
  * 
  * @author wangjie (https://github.com/wj596)
  * @date 2016年9月15日
  */ 
-@Entity
-@Table(name="t_resource")
-public class ResourceEntity extends BaseEntity{
+@TableName("t_resource")
+public class ResourceEntity implements Serializable{
 
 	private static final long serialVersionUID = -8265881454439961651L;
 	
@@ -37,13 +36,21 @@ public class ResourceEntity extends BaseEntity{
 	// 按钮
 	public static final int RESOURCE_TYPE_BUTTON = 2;
 	
+	private String id;// 主键
 	private String code;// 编码
     private String name;// 名称
     private String parentId;// 父编号
     private String url;// 路径
-    private Short type; //类型 1:菜单 2:按钮
-    private Short status;//状态    1:正常、9：删除
+    private Integer type; //类型 1:菜单 2:按钮
+    private Integer status;//状态    1:正常、9：删除
     
+    
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getCode() {
 		return code;
 	}
@@ -68,17 +75,16 @@ public class ResourceEntity extends BaseEntity{
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public Short getType() {
+	public Integer getType() {
 		return type;
 	}
-	public void setType(Short type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
-	public Short getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(Short status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
 }

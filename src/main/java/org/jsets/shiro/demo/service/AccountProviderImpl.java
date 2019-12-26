@@ -17,12 +17,11 @@
  */
 package org.jsets.shiro.demo.service;
 
-
 import java.util.Set;
 import org.apache.shiro.authc.AuthenticationException;
+import org.jsets.shiro.api.ShiroAccountProvider;
 import org.jsets.shiro.demo.domain.entity.UserEntity;
 import org.jsets.shiro.model.Account;
-import org.jsets.shiro.service.ShiroAccountProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
@@ -37,8 +36,6 @@ public class AccountProviderImpl implements ShiroAccountProvider {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserRoleService userRoleService;
 
 	@Override
 	public Account loadAccount(String account) throws AuthenticationException {
@@ -61,7 +58,7 @@ public class AccountProviderImpl implements ShiroAccountProvider {
 	 */
 	@Override
 	public Set<String> loadRoles(String account) {
-		return Sets.newHashSet(userRoleService.listUserRoles(account));
+		return Sets.newHashSet(userService.selectUserRoles(account));
 	}
 	
 	

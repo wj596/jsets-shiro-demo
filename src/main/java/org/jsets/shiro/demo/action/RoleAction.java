@@ -21,7 +21,6 @@ import java.util.List;
 import org.jsets.shiro.demo.domain.BaseResponse;
 import org.jsets.shiro.demo.domain.entity.ResourceEntity;
 import org.jsets.shiro.demo.service.ResourceService;
-import org.jsets.shiro.demo.service.RoleResourceService;
 import org.jsets.shiro.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,9 +44,7 @@ public class RoleAction {
 	private RoleService roleService;
 	@Autowired
 	private ResourceService resourceService;
-	@Autowired
-	private RoleResourceService roleResourceService;
-	
+
     @RequestMapping("/list")
     public String list(Model model) {
     	model.addAttribute("roles", roleService.list());
@@ -64,7 +61,7 @@ public class RoleAction {
     	model.addAttribute("roleId", roleId);
     	model.addAttribute("resources", resourceService.list());
     	List<String> selecteds = Lists.newArrayList();
-    	for(ResourceEntity resource:roleResourceService.listResourceByRole(roleId)){
+    	for(ResourceEntity resource:resourceService.selectResourcesByRole(roleId)){
     		selecteds.add(resource.getId());
     	}
     	model.addAttribute("selecteds", selecteds);
@@ -80,7 +77,7 @@ public class RoleAction {
     public @ResponseBody BaseResponse saveResource(@RequestParam(name="roleId") String roleId,
     											   @RequestParam(name="resourceIds") String resourceIds) {
 
-    	this.roleResourceService.save(roleId, resourceIds);
+    	this.resourceService.roleResBind(roleId, resourceIds);
     	return BaseResponse.ok().message("资源分配成功");
     }
     

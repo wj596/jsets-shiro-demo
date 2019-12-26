@@ -18,8 +18,6 @@
 package org.jsets.shiro.demo.action;
 
 import org.jsets.shiro.demo.domain.BaseResponse;
-import org.jsets.shiro.service.ShiroSecurityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,9 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/hmac_api")
 public class HmacApiAction {
-	
-	@Autowired
-	private ShiroSecurityService shiroSecurityService;
 	
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public BaseResponse add(@RequestParam(name="parameter1") String parameter1

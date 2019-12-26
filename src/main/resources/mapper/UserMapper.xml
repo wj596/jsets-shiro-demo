@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jsets.shiro.demo.mapper.UserMapper">
+
+	<resultMap id="userMap" type="org.jsets.shiro.demo.domain.entity.UserEntity">
+		<result column="ID" property="id" javaType="java.lang.String" />
+		<result column="ACCOUNT" property="account" javaType="java.lang.String" />
+		<result column="PASSWORD" property="password" javaType="java.lang.String" />
+		<result column="USER_NAME" property="userName" javaType="java.lang.String" />
+		<result column="SEX" property="sex" javaType="java.lang.Integer" />
+		<result column="PHONE" property="phone" javaType="java.lang.String" />
+		<result column="EMAIL" property="email" javaType="java.lang.String" />
+		<result column="CREATE_TIME" property="createTime" javaType="java.util.Date" />
+		<result column="CREATE_USER" property="createUser" javaType="java.lang.String" />
+		<result column="STATUS" property="status" javaType="java.lang.Integer" />
+		<result column="ROLE_CODES" property="roleCodes" javaType="java.lang.String" />
+	</resultMap>
+
+
+	<update id="updateStatus" parameterType="java.util.Map">
+		UPDATE T_USER SET STATUS = #{status} WHERE ACCOUNT = #{account}
+	</update>
+
+
+	<select id="getByAccount" resultMap="userMap" parameterType="String">
+		SELECT
+		T.*,
+		TR.ROLE_CODES
+		FROM
+		T_USER T
+		LEFT JOIN (
+		SELECT
+		GROUP_CONCAT( R.CODE ) AS ROLE_CODES,
+		P.USER_ID
+		FROM
+		T_USER_ROLE P
+		LEFT JOIN T_ROLE R ON R.CODE = P.ROLE_ID
+		GROUP BY
+		P.USER_ID
+		) TR ON T.ID = TR.USER_ID
+		WHERE
+		<![CDATA[ T.STATUS <> 9 ]]>
+		AND T.ACCOUNT = #{id}
+	</select>
+
+
+	<select id="selectUsers" resultMap="userMap">
+		SELECT
+		T.*,
+		TR.ROLE_CODES
+		FROM
+		T_USER T
+		LEFT JOIN (
+		SELECT
+		GROUP_CONCAT( R.CODE ) AS ROLE_CODES,
+		P.USER_ID
+		FROM
+		T_USER_ROLE P
+		LEFT JOIN T_ROLE R ON R.CODE = P.ROLE_ID
+		GROUP BY
+		P.USER_ID
+		) TR ON T.ID = TR.USER_ID
+		WHERE
+		<![CDATA[ T.STATUS <> 9 ]]>
+	</select>
+
+</mapper>

@@ -1,10 +1,10 @@
 package org.jsets.shiro.demo.service;
 
 import java.util.List;
-import org.jsets.jdbc.JdbcEnhance;
+import org.jsets.shiro.api.ShiroFilteRulesProvider;
+import org.jsets.shiro.demo.mapper.RoleMapper;
 import org.jsets.shiro.model.CustomRule;
 import org.jsets.shiro.model.RolePermRule;
-import org.jsets.shiro.service.ShiroFilteRulesProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
@@ -18,7 +18,7 @@ import com.google.common.collect.Lists;
 public class FilteRulesProviderImpl implements ShiroFilteRulesProvider{
 	
 	@Autowired
-	private JdbcEnhance jdbcEnhance;
+	private RoleMapper roleMapper;
 	
 	/**
 	 * 加载基于角色/资源的过滤规则
@@ -39,15 +39,7 @@ public class FilteRulesProviderImpl implements ShiroFilteRulesProvider{
 	 */
 	@Override
 	public List<RolePermRule> loadRolePermRules(){
-		 List<RolePermRule> rolePermRules = this.jdbcEnhance
-				 	.selector()
-				 	.SELECT("URL,GROUP_CONCAT(T.ROLE_ID ORDER BY R.URL) NEED_ROLES")
-					.FROM("T_ROLE_RESOURCE T")
-					.JOIN("T_RESOURCE R ON T.RESOURCE_ID = R.ID")
-					.GROUP_BY("R.URL")
-					.entityClass(RolePermRule.class)
-					.list();
-		return rolePermRules;
+		return roleMapper.selectRolePermRules();
 	}
 
 	@Override

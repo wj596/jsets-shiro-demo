@@ -18,10 +18,18 @@
 package org.jsets.shiro.demo.service;
 
 import java.util.List;
-import org.jsets.jdbc.JdbcEnhance;
 import org.jsets.shiro.demo.domain.entity.ResourceEntity;
+import org.jsets.shiro.demo.domain.entity.RoleResourceEntity;
+import org.jsets.shiro.demo.mapper.ResourceMapper;
+import org.jsets.shiro.demo.mapper.RoleResourceMapper;
+import org.jsets.shiro.demo.util.CommonUtil;
+import org.jsets.shiro.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 /**
  * 资源管理Service
  * 
@@ -32,31 +40,49 @@ import org.springframework.stereotype.Service;
 public class ResourceService {
 	
 	@Autowired
-	private JdbcEnhance jdbcEnhance;
+	private ResourceMapper resourceMapper;
+	
+	@Autowired
+	private RoleResourceMapper roleResourceMapper;
 	
 	public int save(ResourceEntity resource){
-		return jdbcEnhance.insert(resource);
+		return resourceMapper.insert(resource);
 	}
 	
 	public int delete(String id){
-		return jdbcEnhance.delete(ResourceEntity.class, id);
+		return resourceMapper.deleteById(id);
 	}
 	
 	public int update(ResourceEntity resource){
-		return jdbcEnhance.update(resource);
+		return resourceMapper.updateById(resource);
 	}
 	
-	public int get(String id){
-		return jdbcEnhance.get(ResourceEntity.class, id);
+	public ResourceEntity get(String id){
+		return resourceMapper.selectById(id);
 	}
 	
 	public List<ResourceEntity> list(){
-		return jdbcEnhance
-				.selector()
-				.SELECT("*")
-				.FROM("T_RESOURCE")
-				.ORDER_BY("ID")
-				.entityClass(ResourceEntity.class)
-				.list();
+		return resourceMapper.selectList(new QueryWrapper<ResourceEntity>());
 	}	
+	
+	public List<ResourceEntity> selectResourcesByRole(String roleId){
+		return roleResourceMapper.selectResourcesByRole(roleId);
+	}	
+
+	
+	/**
+	 *  角色-资源绑定
+	 */
+	@Transactional
+	public void roleResBind(String roleId, String resourceIds){
+		this.roleResourceMapper.deleteResourceByRole(roleId);
+		for(String resourceId:CommonUtil.split(resourceIds)){
+			RoleResourceEntity roleResource = new RoleResourceEntity();
+			roleResource.setRoleId(roleId);
+			roleResource.setResourceId(resourceId);
+			this.roleResourceMapper.insert(roleResource);
+		}
+		// 角色对应的资源改变，要刷新动态过滤规则，以便及时应用更新
+		ShiroUtils.reloadFilterRules();
+	}
 }

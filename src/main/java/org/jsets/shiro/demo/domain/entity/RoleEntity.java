@@ -18,10 +18,9 @@
 package org.jsets.shiro.demo.domain.entity;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import org.springframework.data.annotation.Id;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * 角色实体
@@ -29,8 +28,7 @@ import javax.persistence.Transient;
  * @author wangjie (https://github.com/wj596)
  * @date 2016年9月15日
  */ 
-@Entity
-@Table(name="t_role")
+@TableName("t_role")
 public class RoleEntity implements Serializable{
 	
 	private static final long serialVersionUID = -2914079496867008988L;
@@ -38,8 +36,8 @@ public class RoleEntity implements Serializable{
 	@Id
 	private String code;// 名称
     private String name;// 描述
-    private Short status;//状态    1:正常、9：删除
-    @Transient
+    private Integer status;//状态    1:正常、9：删除
+    @TableField(exist = false)
     private String resourceNames;// 角色拥有的资源
     
     
@@ -55,10 +53,10 @@ public class RoleEntity implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Short getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(Short status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public String getResourceNames() {

@@ -17,24 +17,29 @@
  */
 package org.jsets.shiro.demo.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import org.jsets.shiro.demo.domain.BaseEntity;
+import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
 /**
  * 角色-资源对应 实体
  * 
  * @author wangjie (https://github.com/wj596)
  * @date 2016年9月15日
  */ 
-@Entity
-@Table(name="t_role_resource")
-public class RoleResourceEntity extends BaseEntity{
+@TableName("t_role_resource")
+public class RoleResourceEntity implements Serializable{
 
 	private static final long serialVersionUID = -6107572732501386464L;
 	
+	private String id;// 主键
 	private String roleId;
 	private String resourceId;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getRoleId() {
 		return roleId;
 	}

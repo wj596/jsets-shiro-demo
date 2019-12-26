@@ -17,32 +17,35 @@
  */
 package org.jsets.shiro.demo.service;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.jsets.shiro.demo.domain.entity.UserEntity;
 import org.jsets.shiro.demo.service.UserService;
-import org.jsets.shiro.handler.PasswdRetryLimitHandler;
+import org.jsets.shiro.listener.PasswdRetryLimitListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /**
- * 密码错误次数超限处理器实现集成自PasswdRetryLimitHandler
+ * 密码错误次数超限监听 实现自PasswdRetryLimitListener
  * 此处演示锁定用户
  * 
  * @author wangjie (https://github.com/wj596)
  * @date 2016年9月15日
  */ 
 @Service
-public class PasswdRetryLimitHandlerImpl implements PasswdRetryLimitHandler{
+public class PasswdRetryLimitHandler implements PasswdRetryLimitListener{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PasswdRetryLimitHandlerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PasswdRetryLimitHandler.class);
 
     @Autowired
     private UserService userService;
     
-    @Override
-    public void handle(String account) {
+
+	@Override
+	public void handle(String account, int maxRetries, int retries) throws AuthenticationException{
         //锁定账号
         userService.updateStatus(account, UserEntity.USER_STATUS_LOCKED);
-        LOGGER.warn("账号："+account+"密码错误超过5次，已锁定");
-    }
+        LOGGER.warn("账号："+account+"密码错误超过"+maxRetries+"次，已锁定");
+        throw new AuthenticationException("密码错误超过"+maxRetries+"次，已锁定。请联系管理员");
+	}
 }

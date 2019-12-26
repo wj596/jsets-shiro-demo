@@ -18,42 +18,48 @@
 package org.jsets.shiro.demo.domain.entity;
 
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import org.jsets.shiro.demo.domain.BaseEntity;
 import org.jsets.shiro.model.Account;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+
 /**
  * 用户实体
  * 
  * @author wangjie (https://github.com/wj596)
  * @date 2016年9月15日
  */ 
-@Entity
-@Table(name="t_user")
-public class UserEntity extends BaseEntity implements Account{
+@TableName("t_user")
+public class UserEntity implements Account{
 
 	private static final long serialVersionUID = -7970046217356997350L;
 	
 	// 状态-删除
-	public final static Short USER_STATUS_OK = 1;
+	public final static Integer USER_STATUS_OK = 1;
 	// 状态-锁定
-	public final static Short USER_STATUS_LOCKED = 2;
+	public final static Integer USER_STATUS_LOCKED = 2;
 	// 状态-删除
-	public final static Short USER_STATUS_DELETED = 9;
+	public final static Integer USER_STATUS_DELETED = 9;
 	
+	private String id;// 主键
 	private String account; // 账号
 	private String password; // 密码
     private String userName; // 用户姓名
-    private Short sex;// 性别
+    private Integer sex;// 性别
 	private String phone;// 电话
 	private String email;// 邮箱
     private Date createTime;// 创建时间
     private String createUser;// 创建人
-    private Short status;//状态    1:正常、9：删除
-    @Transient
+    private Integer status;//状态    1:正常、9：删除
+    @TableField(exist = false)
     private String roleCodes;//拥有的角色
     
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getAccount() {
 		return account;
 	}
@@ -71,12 +77,6 @@ public class UserEntity extends BaseEntity implements Account{
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-	public Short getSex() {
-		return sex;
-	}
-	public void setSex(Short sex) {
-		this.sex = sex;
 	}
 	public String getPhone() {
 		return phone;
@@ -102,12 +102,6 @@ public class UserEntity extends BaseEntity implements Account{
 	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
-	public Short getStatus() {
-		return status;
-	}
-	public void setStatus(Short status) {
-		this.status = status;
-	}
 	public String getRoleCodes() {
 		return roleCodes;
 	}
@@ -115,4 +109,19 @@ public class UserEntity extends BaseEntity implements Account{
 		this.roleCodes = roleCodes;
 	}
 
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jsets.shiro.demo.mapper.RoleResourceMapper">
+
+	<resultMap id="resMap" type="org.jsets.shiro.demo.domain.entity.ResourceEntity">
+		<result column="ID" property="id" javaType="java.lang.String" />
+		<result column="CODE" property="code" javaType="java.lang.String"/>
+		<result column="NAME" property="name" javaType="java.lang.String"/>
+		<result column="STATUS" property="status" javaType="java.lang.Integer"/>
+		<result column="PARENT_ID" property="parentId" javaType="java.lang.String" />
+		<result column="URL" property="url" javaType="java.lang.String" />
+		<result column="TYPE" property="type" javaType="java.lang.Integer"/>
+	</resultMap>
+	
+	
+	<delete id="deleteResourceByRole" parameterType="String">
+		DELETE FROM T_ROLE_RESOURCE  WHERE ROLE_ID = #{roleId}
+	</delete>
+	
+	<select id="selectResourcesByRole" resultMap="resMap" parameterType="String">
+		SELECT R.*
+		FROM T_ROLE_RESOURCE T
+		JOIN T_RESOURCE R ON T.RESOURCE_ID = R.ID
+		WHERE T.ROLE_ID = #{roleId}
+	</select>
+
+</mapper>

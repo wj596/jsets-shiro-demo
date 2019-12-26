@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.jsets.shiro.demo.mapper.UserRoleMapper">
+
+	<delete id="deleteByUser" parameterType="String">
+		DELETE FROM T_USER_ROLE  WHERE USER_ID = #{userId}
+	</delete>
+	
+	<select id="selectUserRoles" resultType="String" parameterType="String">
+		SELECT T.ROLE_ID
+		FROM T_USER_ROLE T
+		JOIN T_USER U ON T.USER_ID = U.ID
+		WHERE U.ACCOUNT = #{account}
+	</select>
+
+</mapper>

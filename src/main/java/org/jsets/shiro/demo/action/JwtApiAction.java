@@ -1,7 +1,6 @@
 package org.jsets.shiro.demo.action;
 
 import org.jsets.shiro.demo.domain.BaseResponse;
-import org.jsets.shiro.service.ShiroSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/jwt_api")
 public class JwtApiAction {
-	
-	@Autowired(required = false)
-	private ShiroSecurityService shiroSecurityService;
 	
 	@RequestMapping(value="/add",method=RequestMethod.POST)
 	public BaseResponse add() {

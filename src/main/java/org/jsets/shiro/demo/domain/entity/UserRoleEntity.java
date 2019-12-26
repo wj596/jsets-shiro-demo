@@ -17,24 +17,29 @@
  */
 package org.jsets.shiro.demo.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import org.jsets.shiro.demo.domain.BaseEntity;
+import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
 /**
  * 用户--角色对应  实体
  * 
  * @author wangjie (https://github.com/wj596)
  * @date 2016年9月15日
  */ 
-@Entity
-@Table(name="t_user_role")
-public class UserRoleEntity extends BaseEntity{
+@TableName("t_user_role")
+public class UserRoleEntity implements Serializable{
 
 	private static final long serialVersionUID = 5923259786012610208L;
 	
+	private String id;// 主键
 	private String userId;
 	private String roleId;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getUserId() {
 		return userId;
 	}

@@ -1,0 +1,70 @@
+#web容器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /shiro-demo
+  tomcat:
+    uri-encoding: UTF-8
+#spring配置    
+spring:
+  datasource:
+    com.mysql.cj.jdbc.Driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shiro-demo?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    username: root
+    password: root
+  freemarker:
+    template-loader-path: classpath:/templates
+    charset: UTF-8
+    suffix: .html
+    cache: false
+    request-context-attribute: requestContext 
+  redis:
+    timeout: 6000ms
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 1000   # 连接池最大连接数（使用负值表示没有限制）
+        max-idle: 10       # 连接池中的最大空闲连接
+        max-wait: -1       # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        min-idle:  5       # 连接池中的最小空闲连接 
+#mybatis-plus 配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: UUID
+  mapper-locations: classpath:mapper/*.xml #映射地址
+  type-aliases-package: org.jsets.shiro.demo.domain.entity #实体包
+#jsets-shiro配置
+jsets:
+  shiro:
+    jcaptcha-enable: true  #是否启用验证码验证,不配置默认不启用
+    keep-one-enabled: true #是否启用账号唯一用户登陆(一个账号只允许一个用户登陆，后面登陆的用户踢出前面登陆的用户),不配置默认不启用
+    force-logout-enable: true #是否启用强制用户下线(系统管理员通过session操作迫使指定用户下线),不配置默认不启用
+    auth-cache-enabled: true #是否启用用户和权限数据缓存，不配置默认不启用
+    hmac-enabled: true #是否启用HMAC鉴权，不配置默认不启用
+    #hmac-burn-enabled: true #是否启用HMAC签名即时销毁，不配置默认不启用
+    jwt-enabled: true #是否启用JWT鉴权，不配置默认不启用
+    #jwt-burn-enabled: true #是否启用JWT令牌即时销毁，不配置默认不启用
+    login-url: /login #登陆地址
+    login-success-url: /index #登陆成功后,跳转的页面
+    unauthorized-url: /unauthorized #无权限调转页面
+    kickout-url: /kickout #用户被踢出后跳转的页面,keep-one-enabled=true时此项有用,不配置默认跳转到login-url
+    force-logout-url: /force_logout #用户被强制下线后跳转的页面,force-logout-enable=true时此项有用,不配置默认跳转到login-url
+    passwd-max-retries: 3 #密码错误最多重试次数,不配置默认无限次
+    #session-timeout: 60000 #session有效期(单位为毫秒),不配置默认1小时(3600000毫秒)
+    #session-validation-interval: 60000 #session缓存清理周期,不配置默认1小时(3600000毫秒)
+    #rememberme-max-age: 604800000 #记住我有效期(单位为毫秒),不配置默认7天(604800000毫秒)
+    #rememberme-secret-key: 123456789abcdefh #记住我 cookie加密秘钥(长度需要为8的倍数),不配置默认随机生成一组乱序数字
+    #passwd-alg: MD5 #密码加密算法,不配置默认MD5
+    #passwd-salt: ofaffadfev1234567--090swctewst #密码加密HASH盐 ,不配置默认随机生成一组乱序数字
+    #passwd-iterations: 2 #密码加密HASH次数,不配置默认2次
+    #hmac-alg: HmacMD5 #HMAC签名算法,不配置默认HmacMD5,hmac-enabled=true时此项有用
+    hmac-secret-key: ofaffadfev1234567--090swctewst #HMAC签名全局秘钥,hmac-enabled=true时此项有用
+    #hmac-period: 60000 #HMAC签名有效期(单位为毫秒),不配置默认1分钟,hmac-enabled=true时此项有用
+    jwt-secret-key: ofaffadfev1234567--090swctewst #JWT签名签名全局秘钥,jwt-enabled=true时此项有用
+    filte-rules: # 过滤规则
+      - /assets/**-->anon  # anon 表示不进行鉴权
+      - /login/**-->authc # 表示满足'/login/**'的地址使用authc(登录)过滤器
+      - /logout/**-->logout # 表示满足'/logout/**'的地址使用logout(登出)过滤器
+      - /**-->user,keepOne   #表示满足'/**'的地址使用user(是否登录)、keepOne(账号未在其他处登录)过滤器

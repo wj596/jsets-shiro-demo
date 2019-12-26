@@ -68,7 +68,7 @@ public class UserAction {
      */
     @RequestMapping(value = "/switch_lock", method = RequestMethod.POST)
     public @ResponseBody BaseResponse switchLock(@RequestParam(name="account") String account
-    														,@RequestParam Short lockStatus) {
+    											,@RequestParam Integer lockStatus) {
     	userService.updateStatus(account, lockStatus);
         return BaseResponse.ok().message("用户操作成功");
     }
